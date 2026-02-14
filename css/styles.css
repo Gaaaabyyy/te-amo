@@ -1,0 +1,1769 @@
+/* =========================
+   RESET BÁSICO
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    overflow-y: auto; /* ✅ Scroll desbloqueado (Más sencillo y funcional en móvil) */
+    overflow-x: hidden; /* 🔥 SOLUCIÓN: Evita que la pantalla se aleje por elementos que se salen */
+    width: 100%;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #ffe4e1; /* Color inicial (Hero) */
+    color: #5d5d5d; /* Un gris oscuro para el texto */
+    min-height: 100vh; /* ✅ Permite que el cuerpo crezca con el contenido */
+    transition: background-color 0.8s ease; /* Reducido para que no se sienta lento */
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Marco decorativo */
+body::before {
+    content: '';
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border: 2px solid rgba(244, 114, 182, 0.25);
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: 10; /* Bajamos el nivel para que no bloquee nada */
+}
+
+
+/* =========================
+   SECCIONES PANTALLA COMPLETA
+========================= */
+.screen {
+    display: none; /* Ocultas por defecto */
+    min-height: 100vh; /* ✅ Altura mínima en lugar de fija */
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 20; /* Aseguramos que el contenido esté sobre el borde */
+    /* overflow-y: auto; -> Ya no limitamos el scroll interno */
+}
+
+.screen.active {
+    display: flex; /* Solo la activa se muestra */
+    animation: softFloatIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; /* Más rápido y fluido */
+    will-change: transform, opacity; /* 🔥 Optimización de rendimiento */
+}
+
+/* =========================
+   CONTENIDO GENERAL
+========================= */
+.content {
+    max-width: 800px;
+    animation: fadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; /* Sincronizado con la pantalla */
+    position: relative;
+    z-index: 21; /* Encima de la pantalla */
+}
+
+/* 🔥 SOLUCIÓN: Animación para secciones que no usan .content (Razones, Galería, Gatos, Final) */
+.screen > h1, 
+.screen > h2, 
+.screen > p,
+.reasons-container,
+.gallery-grid,
+.cats-grid,
+.photo-frame,
+.feedback-container {
+    animation: fadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.screen > .nav-buttons {
+    animation: fadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation-delay: 0.1s;
+}
+
+h1, h2 {
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 1rem;
+    color: #333; /* Un negro suave para los títulos */
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+h2 {
+    font-size: 2.2rem;
+}
+
+p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    overflow-wrap: break-word; /* Evita que textos largos ensanchen la pantalla */
+}
+
+/* =========================
+   HERO
+========================= */
+.hero button {
+    margin-top: 2rem;
+    padding: 0.9rem 2.5rem;
+    font-size: 1rem;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(45deg, #f472b6, #fb7185);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, filter 0.3s;
+    animation: heartbeat 2s infinite; /* Animación de latido */
+    position: relative;
+    z-index: 22;
+    pointer-events: auto; /* Asegurar clic */
+}
+
+.hero button:hover {
+    box-shadow: 0 15px 35px rgba(244, 114, 182, 0.5);
+    filter: brightness(1.1);
+    animation-play-state: paused; /* Se detiene al pasar el mouse para facilitar el clic */
+}
+
+/* Botones de navegación (Siguiente) */
+.nav-btn {
+    margin-top: 2rem;
+    padding: 0.8rem 2rem;
+    background: transparent;
+    border: 2px solid #f472b6;
+    color: #f472b6;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    transition: all 0.3s;
+    margin-bottom: 2rem; /* Espacio extra abajo para móviles */
+}
+
+.nav-btn:hover {
+    background: #f472b6;
+    color: white;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    /* z-index manejado por .content ahora */
+}
+
+/* =========================
+   CARTA
+========================= */
+.typing {
+    margin-top: 1.5rem;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    font-weight: 600;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    will-change: contents; /* 🔥 Optimización: Suaviza la animación de escritura */
+    min-height: 180px; /* Reserva espacio fijo para que el título no se mueva al escribir */
+    white-space: pre-wrap; /* ✅ Importante: Respeta los párrafos y saltos de línea */
+}
+
+/* =========================
+   DETALLES
+========================= */
+.details {
+    flex-direction: column;
+}
+
+.cards {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.7); /* Blanco semi-transparente */
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;
+    min-width: 220px;
+    border: 2px solid transparent; /* Reserva espacio para el borde dorado */
+}
+
+.card:hover, .screen.active .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(244, 114, 182, 0.25);
+}
+
+/* Animación Cascada al entrar */
+@keyframes cardCascade {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.screen.active .card {
+    opacity: 0; /* Oculto inicialmente */
+    animation: cardCascade 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.screen.active .card:nth-child(1) { animation-delay: 0.1s; }
+.screen.active .card:nth-child(2) { animation-delay: 0.2s; }
+.screen.active .card:nth-child(3) { animation-delay: 0.3s; }
+.screen.active .card:nth-child(4) { animation-delay: 0.4s; }
+.screen.active .card:nth-child(5) { animation-delay: 0.5s; }
+.screen.active .card:nth-child(6) { animation-delay: 0.6s; }
+.screen.active .card:nth-child(7) { animation-delay: 0.7s; }
+.screen.active .card:nth-child(8) { animation-delay: 0.8s; }
+
+/* Estilo para cupón desbloqueado (Ganado) */
+.card.unlocked {
+    border-color: #ffd700; /* Dorado */
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); /* Resplandor dorado */
+    background: rgba(255, 255, 255, 0.95); /* Más sólido para destacar */
+}
+
+.reasons {
+    flex-direction: column;
+}
+
+/* =========================
+   50 RAZONES
+========================= */
+.reasons-container {
+    max-height: 55vh; /* Altura controlada para que quepan los botones */
+    overflow-y: auto; /* Scroll interno */
+    background: rgba(255, 255, 255, 0.6);
+    padding: 2rem;
+    border-radius: 20px;
+    margin: 1.5rem auto;
+    max-width: 600px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+    scrollbar-width: thin;
+    scrollbar-color: #f472b6 transparent;
+}
+
+/* Estilo scrollbar Chrome/Safari */
+.reasons-container::-webkit-scrollbar {
+    width: 6px;
+}
+.reasons-container::-webkit-scrollbar-thumb {
+    background-color: #f472b6;
+    border-radius: 10px;
+}
+
+.reasons-list {
+    list-style: none;
+    text-align: left;
+}
+
+.reasons-list li {
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(244, 114, 182, 0.4);
+    font-family: 'Caveat', cursive; /* Letra manuscrita para que sea más personal */
+    font-size: 1.6rem; /* Un poco más grande para leerse bien */
+}
+
+/* =========================
+   GALERÍA (MÁS RAZONES)
+========================= */
+.gallery {
+    flex-direction: column;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Adaptable */
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 10px;
+    max-height: 60vh; /* Scroll si son muchas fotos */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #f472b6 transparent;
+}
+
+.photo-item {
+    background: white;
+    padding: 10px 10px 25px 10px; /* Espacio abajo estilo Polaroid */
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, z-index 0.3s;
+    cursor: pointer;
+    position: relative; /* Necesario para que z-index funcione */
+    pointer-events: auto;
+}
+
+.photo-item:hover {
+    transform: scale(1.1) rotate(2deg);
+    z-index: 10;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.photo-item img {
+    width: 100%;
+    height: 150px; /* Altura fija para que se vean ordenadas */
+    object-fit: cover; /* Recorta la imagen para llenar el cuadro sin deformar */
+    border-radius: 2px;
+    background-color: #eee; /* Fondo gris para ver el hueco si falla la imagen */
+}
+
+/* =========================
+   SECCIÓN DE GATOS (MICHIS)
+========================= */
+.cats-screen {
+    flex-direction: column;
+}
+
+.cats-grid {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+}
+
+.cat-item {
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.cat-item:hover {
+    transform: translateY(-10px);
+}
+
+/* Wrapper para posicionar las orejas */
+.cat-photo-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 15px auto; /* Centrado y espacio abajo */
+}
+
+/* Las orejas (Cuadrados rotados) */
+.cat-photo-wrapper::before,
+.cat-photo-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    background: #f472b6; /* Color de las orejas (igual al borde) */
+    border-radius: 8px; /* Puntas suaves */
+    z-index: 0; /* Detrás de la foto */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cat-photo-wrapper::before { left: 0; transform: rotate(-15deg); }
+.cat-photo-wrapper::after { right: 0; transform: rotate(15deg); }
+
+/* Animación: Levantar orejas al pasar el mouse */
+.cat-item:hover .cat-photo-wrapper::before { transform: rotate(-25deg) translate(-5px, -5px); }
+.cat-item:hover .cat-photo-wrapper::after { transform: rotate(25deg) translate(5px, -5px); }
+
+/* La foto circular */
+.cat-photo-wrapper img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* Redondos */
+    object-fit: cover;
+    border: 4px solid #f472b6;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1; /* Encima de las orejas */
+    background: white;
+}
+
+/* =========================
+   CUENTA REGRESIVA
+========================= */
+.countdown {
+    flex-direction: column; /* Esto baja los botones */
+}
+
+#timer {
+    font-family: 'Playfair Display', serif; /* Letra elegante para los números */
+    font-size: 4rem;
+    letter-spacing: 3px;
+    margin: 1.5rem 0;
+    color: #d9534f; /* Un rojo amapola, contrastante pero suave */
+    animation: pulseGlow 2.5s infinite ease-in-out; /* Animación de latido para el brillo */
+}
+
+/* =========================
+   ÁRBOL DE CORAZONES
+========================= */
+.tree-wrapper {
+    position: absolute;
+    bottom: 0;
+    right: 5%; /* Margen derecho para que no se pegue al borde */
+    left: auto;
+    /* Usamos vh para la altura y aspect-ratio para el ancho, asegurando que no se deforme */
+    height: 80vh; 
+    max-height: 600px; /* Límite en pantallas muy altas */
+    aspect-ratio: 300 / 400; /* Proporción del SVG (ancho / alto) */
+    pointer-events: none;
+    z-index: 0;
+}
+
+.tree-svg { position: absolute; width: 100%; height: 100%; bottom: 0; left: 0; }
+
+/* El Tallo (Ahora SVG) */
+.tree-stem {
+    stroke-dasharray: 1000; /* Longitud suficiente para cubrir el trazo */
+    stroke-dashoffset: 1000; /* Oculto inicialmente */
+    transition: stroke-dashoffset 2.5s ease-out;
+    filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.2)); /* Sombra suave para volumen */
+}
+
+.tree-stem.grown {
+    stroke-dashoffset: 0; /* Se dibuja completo */
+}
+
+.tree-branch {
+    /* Clase auxiliar para identificar ramas en JS */
+}
+
+/* Copa del árbol (donde nacen las hojas) */
+.tree-crown {
+    /* Este contenedor debe superponerse perfectamente al wrapper para que los % funcionen */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    bottom: 0;
+}
+
+/* Hojas (Corazones CSS) */
+.tree-leaf {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--color);
+    transform: rotate(-45deg) scale(0);
+    /* La animación se define en JS para variar delays */
+    opacity: 0.9;
+    will-change: transform; /* 🔥 Optimización */
+}
+
+.tree-leaf::before,
+.tree-leaf::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--color);
+    border-radius: 50%;
+}
+
+.tree-leaf::before { top: -7.5px; left: 0; }
+.tree-leaf::after { left: 7.5px; top: 0; }
+
+@keyframes bloomLeaf {
+    to { transform: rotate(var(--rotation)) scale(var(--scale)); }
+}
+
+/* Animación de caída suave */
+@keyframes fallLeaf {
+    0% { transform: rotate(var(--rotation)) scale(var(--scale)) translateY(0); opacity: 0.9; }
+    100% { transform: rotate(calc(var(--rotation) + 90deg)) scale(var(--scale)) translateY(200px); opacity: 0; }
+}
+
+.tree-leaf.falling {
+    animation: bloomLeaf 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, fallLeaf 4s ease-in-out 2s infinite;
+}
+
+/* 🐦 Pájaros Volando */
+.bird {
+    position: absolute;
+    width: 10px;
+    height: 6px;
+    border-bottom: 2px solid #4a4a4a;
+    border-left: 2px solid #4a4a4a;
+    transform: rotate(-45deg); /* Forma de V */
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.bird-1 { top: 25%; right: 35%; animation: flyBird 14s linear infinite 2s; }
+.bird-2 { top: 30%; right: 15%; animation: flyBird 11s linear infinite 0s; }
+.bird-3 { top: 20%; right: 25%; animation: flyBird 16s linear infinite 6s; }
+
+@keyframes flyBird {
+    0% { transform: translate(20px, 20px) rotate(-45deg) scale(0.6); opacity: 0; }
+    10% { opacity: 0.7; }
+    100% { transform: translate(-80px, -40px) rotate(-45deg) scale(0.8); opacity: 0; }
+}
+
+.countdown-content {
+    position: relative;
+    z-index: 2; /* Encima del árbol */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Alineación superior */
+    padding-bottom: 2rem;
+}
+
+/* Ajuste para el texto Top-Left */
+#typewriter-msg {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8%;
+    font-family: 'Dancing Script', cursive; /* Estilo manuscrito */
+    color: #333333;
+    font-size: 2.5rem;
+    max-width: 80%; /* Un ancho más generoso */
+}
+
+@media (max-width: 768px) {
+    #typewriter-msg {
+        max-width: 90%; /* En móvil sí puede ser más ancho */
+    }
+    .timer-group {
+        /* En móvil, le agregamos un fondo para legibilidad */
+        background: rgba(255, 255, 255, 0.7); /* Placa de fondo para leer bien los números */
+        padding: 1rem;
+        border-radius: 20px;
+        width: 90%; /* Que no ocupe todo el ancho */
+    }
+}
+
+.timer-group {
+    /* Lo subimos y centramos */
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.timer-label {
+    border-top: 2px solid #333;
+    padding-top: 10px;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+#timer {
+    margin: 0; /* Resetear margen anterior */
+    text-align: center;
+}
+
+/* =========================
+   PANTALLA DE MAPA
+========================= */
+.map-screen {
+    flex-direction: column;
+}
+
+#map-container {
+    width: 100%;
+    max-width: 600px;
+    height: 400px; /* Altura fija necesaria para Leaflet */
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border: 4px solid white;
+    margin: 1rem 0;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Icono del vehículo en movimiento */
+.moving-vehicle {
+    font-size: 1.5rem;
+    line-height: 1;
+    text-align: center;
+    transition: none; /* Importante para que la animación JS sea fluida */
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    will-change: transform; /* 🔥 Optimización movimiento mapa */
+}
+
+.vehicle-rotate {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    transform-origin: center center;
+}
+
+/* =========================
+   PANTALLA DE ELECCIÓN
+========================= */
+.choice {
+    flex-direction: column;
+}
+
+.choice-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+}
+
+.choice-btn {
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    font-size: 1.2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 10001;
+    pointer-events: auto;
+}
+
+.choice-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.choice-btn.blue {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+}
+
+.choice-btn.green {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
+}
+
+.confirmation-box {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px dashed rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Utilidad para ocultar elementos */
+.hidden {
+    display: none !important;
+}
+
+/* =========================
+   INTRUSO
+========================= */
+.intruder {
+    background: #2c3e50 !important; /* Fondo oscuro para el error */
+    color: white;
+}
+.intruder h1 {
+    color: #e74c3c; /* Rojo alerta */
+}
+
+/* =========================
+   FINAL
+========================= */
+.finale {
+    flex-direction: column;
+}
+
+.photo-frame {
+    position: relative; /* Necesario para colocar la cinta adhesiva */
+    background: #fff; /* Fondo blanco papel */
+    padding: 15px 15px 60px 15px; /* Espacio extra abajo para el texto */
+    border-radius: 4px; /* Bordes más rectos estilo foto */
+    box-shadow: 0 10px 30px rgba(244, 114, 182, 0.4);
+    margin: 2rem auto;
+    max-width: 300px; /* Ajusta esto según el tamaño de tu foto */
+    transform: rotate(-3deg);
+    transition: all 0.3s ease;
+}
+
+.photo-frame:hover {
+    transform: rotate(0deg) scale(1.05);
+    box-shadow: 0 15px 40px rgba(244, 114, 182, 0.6);
+}
+
+/* Efecto Washi Tape (Cinta adhesiva) */
+.photo-frame::before {
+    content: '';
+    position: absolute;
+    top: -15px; /* Que sobresalga por arriba */
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg); /* Centrada y un poco torcida */
+    width: 120px;
+    height: 35px;
+    background-color: rgba(255, 255, 255, 0.45); /* Semitransparente */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 1px dashed rgba(0,0,0,0.1); /* Bordes irregulares */
+    border-right: 1px dashed rgba(0,0,0,0.1);
+    backdrop-filter: blur(2px); /* Efecto borroso detrás de la cinta */
+}
+
+.photo-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid #eee; /* Borde sutil a la imagen interna */
+    min-height: 200px; /* Altura mínima para ver el error si no carga */
+    background-color: #f9f9f9;
+}
+
+/* Texto manuscrito estilo Polaroid */
+.photo-caption {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    color: #444;
+    text-align: center;
+    margin-top: 15px;
+    transform: rotate(-1deg); /* Ligera inclinación para que parezca escrito a mano */
+}
+
+/* Botón de reinicio discreto */
+.reset-btn {
+    margin-top: 20px;
+    background: none;
+    border: none;
+    color: #999;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+    opacity: 0.6;
+    transition: all 0.3s;
+    position: relative;
+    z-index: 10001;
+    pointer-events: auto;
+}
+
+.reset-btn:hover {
+    opacity: 1;
+    color: #f472b6;
+    transform: scale(1.05);
+}
+
+/* =========================
+   FEEDBACK Y MENÚ FINAL
+========================= */
+.feedback-container {
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    z-index: 10001;
+    pointer-events: auto;
+}
+
+.feedback-textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    border: 2px solid rgba(244, 114, 182, 0.5);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    resize: none; /* Evitar que deforme el diseño */
+    min-height: 80px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    transition: border-color 0.3s;
+}
+
+.feedback-textarea:focus {
+    outline: none;
+    border-color: #f472b6;
+    background: white;
+}
+
+/* Menú flotante izquierda */
+.floating-menu {
+    position: relative; /* Ahora fluye con el contenido */
+    bottom: auto;
+    left: auto;
+    margin-top: 2rem; /* Espacio arriba para separarlo */
+    z-index: 10005; /* 🔥 FIX: Z-index alto para que el botón funcione (encima del feedback) */
+    text-align: left;
+    display: flex;
+    justify-content: flex-start; /* Alineado a la izquierda */
+    flex-direction: column;
+    align-items: flex-start; /* Alineado a la izquierda */
+    width: 100%;
+    padding-left: 10px;
+}
+
+.menu-options {
+    position: absolute;
+    bottom: 100%; /* Aparece encima del botón */
+    left: 0; /* Alineado a la izquierda con el botón */
+    transform: none; /* Quitamos el centrado */
+    margin-bottom: 10px;
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 180px;
+    transition: all 0.3s ease;
+    transform-origin: bottom left; /* Origen de la animación */
+}
+
+.menu-options.hidden {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px); /* Animación simple */
+    pointer-events: none;
+}
+
+/* =========================
+   ANIMACIONES
+========================= */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* Menos distancia = menos "arrastre" */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes softFloatIn {
+    0% { opacity: 0; transform: translateY(20px) scale(0.98); } /* Movimiento más sutil */
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeInSlow {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.hidden-fade {
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.1); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
+}
+
+/* Animación de brillo palpitante */
+@keyframes pulseGlow {
+    0%, 100% {
+        text-shadow: 0 0 15px rgba(217, 83, 79, 0.6);
+    }
+    50% {
+        text-shadow: 0 0 25px rgba(217, 83, 79, 0.9); /* Más intenso en el pico */
+    }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    #timer {
+        font-size: 2.2rem;
+    }
+
+    /* Fix para móviles: Alinear al inicio para que no se corte el título al hacer scroll */
+    .screen {
+        /* Restauramos el centrado vertical */
+        height: auto; /* Permitir que crezca si el contenido es largo */
+        min-height: 100vh;
+        padding-top: 6rem; /* Espacio amplio arriba para que no choque con el borde */
+        padding-bottom: 4rem; /* Espacio abajo para navegar cómodo */
+        padding-left: 1.5rem; /* Ajuste lateral para que no se vea pegado */
+        padding-right: 1.5rem;
+        justify-content: flex-start; /* 🔥 FIX: Evita que el contenido se corte arriba */
+    }
+
+    /* Tarjetas verticales en móvil (Lista hacia abajo) */
+    .cards {
+        flex-wrap: wrap; /* Permitir que se apilen */
+        overflow-x: visible; /* Sin scroll horizontal */
+        justify-content: center;
+        padding: 0;
+        scroll-snap-type: none;
+    }
+
+    .card {
+        flex: 0 0 100%; /* Ocupar todo el ancho disponible */
+        width: 100%;
+        scroll-snap-align: none;
+    }
+
+    /* 📱 Ajuste del mapa para móviles */
+    #map-container {
+        height: 300px; /* Reducimos la altura para que no ocupe toda la pantalla */
+        max-height: 50vh;
+    }
+
+    /* 🔥 FIX: Altura mínima en móviles para que quepan textos largos en la galería */
+    .lightbox-card {
+        min-height: 50vh;
+    }
+
+    /* Ajuste del árbol para móviles */
+    .tree-wrapper {
+        height: 55vh; /* Un poco más alto para que luzca */
+        width: 90vw;
+        max-height: none;
+        right: 0;
+        left: 0;
+        margin: 0 auto;
+    }
+
+    /* 🔥 OPTIMIZACIÓN CRÍTICA PARA MÓVILES */
+    /* El efecto blur consume mucha GPU. Lo quitamos en celular para ganar FPS */
+    .card {
+        backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.9); /* Fondo más sólido para compensar */
+    }
+    .modal-overlay {
+        backdrop-filter: none;
+    }
+
+    /* OPTIMIZACIÓN DE ESPACIO EN MODALES (PREGUNTAS) */
+    .modal {
+        padding: 1.5rem; /* Reducir relleno drásticamente (antes 2.5rem) */
+        width: 95%; /* Usar casi todo el ancho de la pantalla */
+    }
+    
+    .coupon {
+        padding: 1rem; /* Contenido más compacto dentro del borde */
+    }
+
+    .coupon-title {
+        font-size: 1.8rem !important; /* Título más pequeño */
+        margin-bottom: 0.5rem;
+    }
+
+    .quiz-options {
+        margin-top: 1rem;
+        gap: 0.8rem; /* Botones más juntos */
+    }
+    
+    .quiz-btn {
+        padding: 0.8rem; /* Botones menos altos */
+        font-size: 1rem;
+    }
+}
+
+/* =========================
+   MODAL / CUPONES
+========================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 1000; /* Por encima de las pantallas */
+    transition: opacity 0.3s ease;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem;
+    z-index: 1001;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    text-align: center;
+}
+
+/* =========================
+   EFECTOS DE MODALES
+========================= */
+/* Desactivar transición de transform si hay efecto (dejamos opacity) */
+.modal[class*="effect-"] {
+    transition: opacity 0.3s ease;
+}
+
+/* 1. Bounce (Rebote - Alegría) */
+.modal.effect-bounce:not(.hidden) {
+    animation: modalBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes modalBounce {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* 2. Slide Down (Bajar - Cine) */
+.modal.effect-slide:not(.hidden) {
+    animation: modalSlide 0.5s ease-out forwards;
+}
+@keyframes modalSlide {
+    0% { opacity: 0; transform: translate(-50%, -150%); }
+    100% { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* 3. Rotate (Giro - Música) */
+.modal.effect-rotate:not(.hidden) {
+    animation: modalRotate 0.6s ease-out forwards;
+}
+@keyframes modalRotate {
+    0% { opacity: 0; transform: translate(-50%, -50%) rotate(-90deg) scale(0.5); }
+    100% { opacity: 1; transform: translate(-50%, -50%) rotate(0) scale(1); }
+}
+
+/* 4. Shake (Vibrar - Llamada) */
+.modal.effect-shake:not(.hidden) {
+    animation: modalShake 0.6s ease-out forwards;
+}
+@keyframes modalShake {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    40% { transform: translate(-50%, -50%) scale(1.05) rotate(5deg); }
+    60% { transform: translate(-50%, -50%) scale(1.05) rotate(-5deg); }
+    80% { transform: translate(-50%, -50%) scale(1.05) rotate(3deg); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0); }
+}
+
+/* 5. Zoom (Impacto - Amor) */
+.modal.effect-zoom:not(.hidden) {
+    animation: modalZoom 0.5s ease-out forwards;
+}
+@keyframes modalZoom {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(2); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.9);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.modal-close-btn:hover {
+    color: #333;
+}
+
+.coupon {
+    font-family: 'Pinyon Script', cursive;
+    color: #4a4a4a;
+    border: 3px dashed #f472b6;
+    padding: 2rem;
+    border-radius: 15px;
+}
+
+.coupon-title {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    color: #d9534f;
+}
+
+.coupon-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.coupon-signature {
+    font-size: 2.2rem;
+}
+
+/* =========================
+   CORAZONES FLOTANTES PRO
+========================= */
+.floating-hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 900;
+    overflow: hidden;
+}
+
+.heart-float {
+    position: fixed; /* CLAVE */
+    top: 100vh;       /* SIEMPRE nacen abajo */
+    will-change: transform, opacity;
+    opacity: 0.75;
+    animation-name: heartFloat;
+    animation-timing-function: linear;
+}
+
+@keyframes heartFloat {
+    0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0.75;
+    }
+    100% {
+        transform: translateY(-120vh) scale(1.4);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   CONFETI
+========================= */
+.confetti {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 2000; /* Por encima del modal para que se vea bien */
+    animation: confettiExplode ease-out forwards;
+    pointer-events: none; /* Para que no bloqueen clics */
+    user-select: none;
+}
+
+@keyframes confettiExplode {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+    100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) rotate(var(--rot)); opacity: 0; }
+}
+
+/* =========================
+   INPUT PASSWORD
+========================= */
+.password-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 22;
+    pointer-events: auto;
+}
+
+.password-container.hidden {
+    display: none;
+}
+
+#passwordInput {
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    border: 2px solid #f472b6;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    outline: none;
+    text-align: center;
+    width: 100%;
+    max-width: 250px;
+    transition: all 0.3s;
+}
+
+#passwordInput:focus {
+    box-shadow: 0 0 15px rgba(244, 114, 182, 0.3);
+}
+
+/* Animación de error (temblor) */
+.input-error {
+    animation: shakeInput 0.4s ease-in-out;
+    border-color: #d9534f !important;
+}
+
+@keyframes shakeInput {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* Éxito (Borde verde) */
+.input-success {
+    border-color: #2ecc71 !important; /* Verde bonito */
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.5) !important;
+}
+
+/* Botón Éxito */
+.btn-success {
+    background: #2ecc71 !important;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.6);
+}
+
+/* Lluvia de corazones */
+.heart-rain {
+    position: fixed;
+    top: -10vh;
+    z-index: 9999;
+    pointer-events: none;
+    animation: fallDown linear forwards;
+}
+
+@keyframes fallDown {
+    to { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* =========================
+   ESTILOS DEL QUIZ
+========================= */
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.quiz-btn {
+    padding: 1rem;
+    border: 2px solid #f472b6;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #5d5d5d;
+}
+
+.quiz-btn:hover {
+    background: #f472b6;
+    color: white;
+    transform: scale(1.02);
+}
+
+/* Error en el quiz */
+.btn-error {
+    background: #ffebee !important;
+    border-color: #ef5350 !important;
+    color: #d32f2f !important;
+    animation: shakeInput 0.4s;
+}
+
+/* Bloques de preguntas */
+.question-block {
+    animation: fadeUp 0.5s ease;
+}
+
+.question-block.hidden {
+    display: none;
+}
+
+.q-text {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+/* =========================
+   CORTINA DE INICIO (INTRO)
+========================= */
+#intro-curtain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000; /* Por encima de todo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Para que no bloquee clics si falla JS, aunque JS lo borrará */
+}
+
+.curtain-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Asegurar que el SVG de la cortina no bloquee nada */
+}
+
+/* El camino del telón (Rectángulo gigante con agujero) */
+#curtain-path {
+    transform-origin: 50px 55px; /* Centro exacto del corazón */
+    transform: scale(0.02); /* Empezamos muy pequeños (agujero cerrado, pero rect cubre pantalla) */
+    will-change: transform; /* Optimización clave para evitar lag */
+    animation: openCurtain 5s ease-in-out 0.5s forwards;
+}
+
+/* =========================
+   LIGHTBOX (GALERÍA)
+========================= */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 3000; /* Encima de todo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Contenedor de perspectiva */
+.lightbox-perspective {
+    perspective: 1000px;
+    width: auto;
+    height: auto;
+    max-width: 90%;
+    max-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* La tarjeta que gira */
+.lightbox-card {
+    position: relative;
+    width: auto;
+    min-width: 300px; /* 🔥 FIX: Ancho mínimo para que el texto no se aplaste en fotos verticales */
+    max-width: 90vw; /* Seguridad para móviles pequeños */
+    min-height: 350px; /* 🔥 FIX: Altura mínima para que el texto quepa si la foto es pequeña */
+    height: auto;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.lightbox-card.flipped {
+    transform: rotateY(180deg);
+}
+
+/* Caras de la tarjeta */
+.lightbox-front, .lightbox-back {
+    backface-visibility: hidden;
+    border-radius: 10px;
+    width: 100%; /* Asegurar que llenen el ancho mínimo del contenedor */
+}
+
+.lightbox-front {
+    background: black; /* Fondo negro para rellenar los lados si la foto es angosta */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-front img {
+    display: block;
+    max-width: 100%; /* Ajustarse al contenedor */
+    max-height: 80vh;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    object-fit: contain;
+}
+
+.lightbox-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotateY(180deg);
+    background: #fff; /* Fondo blanco tipo polaroid */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* 🔥 FIX: Permite scroll sin cortar el texto arriba */
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    overflow-y: auto;
+}
+
+#lightbox-desc {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.6rem, 5vw, 2.5rem); /* 🔥 Tamaño dinámico para móviles */
+    color: #333;
+    margin: auto 0; /* Centrado vertical inteligente */
+    line-height: 1.2;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 3rem;
+    cursor: pointer;
+    z-index: 3001;
+}
+
+/* Botón de Zoom */
+.lightbox-zoom-btn {
+    position: absolute;
+    top: 20px;
+    right: 80px; /* A la izquierda del botón cerrar */
+    color: white;
+    font-size: 2.5rem;
+    cursor: pointer;
+    z-index: 3001;
+    transition: transform 0.3s;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.lightbox-zoom-btn:hover {
+    transform: scale(1.1);
+}
+
+/* --- MODO ZOOM (Para ver imágenes largas/chats) --- */
+.lightbox.zoomed-mode .lightbox-perspective {
+    display: block; /* Quitamos flex para permitir scroll */
+    max-height: 100vh;
+    max-width: 100vw;
+    overflow-y: auto; /* Habilitar scroll vertical */
+    padding: 10px;
+}
+
+.lightbox.zoomed-mode .lightbox-card {
+    transform: none !important; /* Desactivar giro 3D */
+    width: 100%;
+    height: auto;
+    cursor: zoom-out; /* Indicar que al hacer clic se aleja */
+}
+
+.lightbox.zoomed-mode .lightbox-front img {
+    max-height: none; /* Permitir que crezca a lo largo */
+    max-width: 100%;
+    width: 100%; /* Ocupar todo el ancho (ideal para leer chats) */
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+/* Ocultar instrucciones y parte trasera en modo zoom */
+.lightbox.zoomed-mode .lightbox-back,
+.lightbox.zoomed-mode p {
+    display: none;
+}
+
+@keyframes openCurtain {
+    0% { transform: scale(0.02); }
+    100% { transform: scale(60); } /* Agrandamos hasta que el agujero salga de pantalla */
+}
+
+/* =========================
+   TRANSICIONES CINEMÁTICAS
+========================= */
+#transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffe4e1; /* Rosa suave, como el fondo inicial */
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+}
+
+#transition-overlay.active {
+    opacity: 1;
+    pointer-events: all; /* Bloquea clics mientras está activo */
+}
+
+#transition-text {
+    color: #f472b6; /* Rosa principal para el texto */
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.8rem; /* Un poco más grande para más impacto */
+    max-width: 80%;
+    text-align: center;
+    line-height: 1.4;
+    transform: translateY(20px);
+    transition: transform 0.8s ease;
+}
+
+#transition-overlay.active #transition-text {
+    transform: translateY(0);
+}
+
+/* =========================
+   BOTÓN DE MÚSICA
+========================= */
+.music-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.3s;
+    opacity: 0.8;
+}
+
+.music-container:hover {
+    opacity: 1;
+}
+
+.music-container.hidden {
+    display: none;
+}
+
+.music-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #f472b6;
+    color: #f472b6;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.music-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(244, 114, 182, 0.4);
+}
+
+/* Barra de progreso */
+.music-progress-bg {
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.music-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #f472b6;
+    transition: width 0.2s linear;
+}
+
+/* Palabras secretas en sección gatos */
+.cat-secret {
+    cursor: help; /* Cursor de interrogación para dar pista */
+    transition: color 0.3s;
+}
+
+/* Palabras secretas en sección galería */
+.gallery-secret {
+    cursor: help;
+    transition: color 0.3s;
+}
+
+/* Estilo para cupón bloqueado (Perdido) */
+.card.locked {
+    border-color: #d9534f; /* Rojo */
+    box-shadow: 0 0 20px rgba(217, 83, 79, 0.4);
+    background: rgba(255, 255, 255, 0.95);
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+/* Error visual en el borde del cupón (dentro del modal) */
+.coupon.error {
+    border-color: #d9534f !important;
+    box-shadow: 0 0 15px rgba(217, 83, 79, 0.3);
+}
+
+/* Botón seleccionado en quiz múltiple */
+.quiz-btn.selected {
+    background: #f472b6;
+    color: white;
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(244, 114, 182, 0.4);
+    border-color: #f472b6;
+}
+
+/* =========================
+   PANTALLA TRANSICIÓN GABRIELA
+========================= */
+.gabriela-transition {
+    flex-direction: column;
+}
+
+.heart-anim-container {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+}
+
+.heart-svg-draw {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.3));
+}
+
+.heart-svg-draw path {
+    stroke-dasharray: 300;
+    stroke-dashoffset: 300;
+    animation: drawHeartPath 2.5s ease-out forwards;
+}
+
+.heart-svg-draw text {
+    opacity: 1; /* Controlado por JS letra por letra */
+}
+
+@keyframes drawHeartPath {
+    to { stroke-dashoffset: 0; fill: rgba(255, 255, 255, 0.5); }
+}
+
+@keyframes fadeInText {
+    to { opacity: 1; }
+}
+
+.fade-in-text {
+    opacity: 0;
+    animation: fadeInSlow 2s ease 3s forwards; /* Aparece al final */
+    margin-top: 2rem;
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.8rem;
+    color: #d9534f;
+}
+
+.heart-beating {
+    animation: softHeartbeat 2.5s infinite ease-in-out;
+}
+
+@keyframes softHeartbeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.05); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.05); }
+    60% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+
+/* Partículas pequeñas para el corazón */
+.mini-particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2000;
+    animation: particleFade 1s ease-out forwards;
+}
+
+@keyframes particleFade {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+
+/* =========================
+   PALABRAS SECRETAS & PANTALLA OCULTA
+========================= */
+.secret-word {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+.secret-word:hover {
+    text-shadow: 0 0 5px rgba(244, 114, 182, 0.5);
+}
+
+.secret-word.found {
+    color: #f472b6;
+    font-weight: bold;
+    transform: scale(1.1);
+    text-shadow: 0 0 10px rgba(244, 114, 182, 0.4);
+}
+
+.secret-screen {
+    background-color: #fff0f5 !important;
+    /* Patrón de corazones SVG repetible y animado */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff69b4' fill-opacity='0.15' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+    animation: secretHeartScroll 10s linear infinite;
+}
+
+.hidden-screen {
+    display: none !important;
+}
+
+.prank-screen {
+    background-color: #f0f0f0; /* Gris claro para el efecto "nada" */
+    flex-direction: column;
+}
+
+@keyframes secretHeartScroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 60px 60px; } /* Movimiento diagonal infinito */
+}
+
+/* Animación de rebote para aparición (Gatos secretos) */
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    50% { opacity: 1; transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+.bounce-in {
+    animation: bounceIn 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+}
